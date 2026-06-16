@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Transferir')}"></head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <div class="mb-8">
+        <p class="text-sm font-medium text-teal-700">Transferencia</p>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">Enviar dinero</h1>
+        <p class="mt-2 text-sm text-slate-500">Transfiere saldo a otro usuario existente del sistema.</p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[1fr_420px]">
+        <section class="space-y-6">
+            <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <p class="text-sm font-medium text-slate-500">Saldo actual</p>
+                <p class="mt-3 text-3xl font-bold tracking-tight text-slate-900">$<span th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">0.00</span></p>
+                <p class="mt-2 text-sm text-slate-500">Cuenta de @<span th:text="${account.user.username}">usuario</span></p>
+            </div>
+
+            <div class="rounded-2xl border border-blue-100 bg-blue-50 p-4 text-sm text-blue-800">
+                Verifica el usuario destino y el monto antes de confirmar la transferencia.
+            </div>
+        </section>
+
+        <section class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-800">Datos de transferencia</h2>
+            <form th:action="@{/transfer}" th:object="${transferRequest}" method="post" class="mt-6 space-y-5">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                <div th:if="${#fields.hasGlobalErrors()}" class="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+                </div>
+
+                <div>
+                    <label for="destinationUsername" class="block text-sm font-medium text-slate-700">Usuario destino</label>
+                    <input id="destinationUsername" th:field="*{destinationUsername}" type="text" autocomplete="off" required class="mt-2 block w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-teal-600 focus:ring-4 focus:ring-teal-100">
+                    <p class="mt-2 text-sm font-medium text-red-600" th:if="${#fields.hasErrors('destinationUsername')}" th:errors="*{destinationUsername}"></p>
+                </div>
+
+                <div>
+                    <label for="amount" class="block text-sm font-medium text-slate-700">Monto</label>
+                    <div class="mt-2 flex rounded-xl border border-slate-300 bg-white shadow-sm transition focus-within:border-teal-600 focus-within:ring-4 focus-within:ring-teal-100">
+                        <span class="flex items-center border-r border-slate-200 px-4 text-sm font-semibold text-slate-500">$</span>
+                        <input id="amount" th:field="*{amount}" type="number" min="0.01" step="0.01" required class="block w-full rounded-r-xl border-0 bg-transparent px-4 py-3 text-sm text-slate-900 outline-none">
+                    </div>
+                    <p class="mt-2 text-sm font-medium text-red-600" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></p>
+                </div>
+
+                <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl bg-teal-700 px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-teal-800 focus:outline-none focus:ring-4 focus:ring-teal-100">Transferir</button>
+            </form>
+        </section>
+    </div>
+</main>
+</body>
+</html>

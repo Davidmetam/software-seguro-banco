@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body class="min-h-screen bg-slate-50 text-slate-800">
+<div th:replace="~{fragments/layout :: navbar}"></div>
+
+<main class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <div th:if="${successMessage}" class="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800" th:text="${successMessage}"></div>
+
+    <div class="mb-8 flex flex-col gap-2">
+        <p class="text-sm font-medium text-blue-700">Panel principal</p>
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900">Bienvenido, <span th:text="${user.name}">usuario</span></h1>
+        <p class="text-sm text-slate-500">Administra tus operaciones bancarias desde un panel claro y profesional.</p>
+    </div>
+
+    <section class="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div class="overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-blue-800 p-6 text-white shadow-xl shadow-blue-950/20">
+            <p class="text-sm font-medium text-blue-100">Saldo disponible</p>
+            <p class="mt-4 text-4xl font-bold tracking-tight">$<span th:text="${#numbers.formatDecimal(account.balance, 1, 'COMMA', 2, 'POINT')}">0.00</span></p>
+            <p class="mt-2 text-sm text-blue-100">Banca del Bienestar</p>
+            <div class="mt-8 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
+                    <p class="text-xs font-medium uppercase text-blue-100">Usuario</p>
+                    <p class="mt-1 font-semibold text-white">@<span th:text="${user.username}">usuario</span></p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/10 p-4">
+                    <p class="text-xs font-medium uppercase text-blue-100">Estado</p>
+                    <p class="mt-1 font-semibold text-white">Cuenta activa</p>
+                </div>
+            </div>
+        </div>
+
+        <aside class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-blue-700">✓</div>
+            <h2 class="mt-4 text-lg font-semibold text-slate-900">Operaciones bancarias</h2>
+            <p class="mt-2 text-sm text-slate-500">Consulta tu saldo y realiza depositos, retiros y transferencias desde un mismo lugar.</p>
+        </aside>
+    </section>
+
+    <section class="mt-8">
+        <h2 class="text-lg font-semibold text-slate-800">Operaciones rapidas</h2>
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <a th:href="@{/deposit}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-lg font-bold text-emerald-700">+</div>
+                <h3 class="mt-4 text-base font-semibold text-slate-900">Depositar</h3>
+                <p class="mt-1 text-sm text-slate-500">Agrega saldo a tu cuenta.</p>
+            </a>
+            <a th:href="@{/withdraw}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-amber-200 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-lg font-bold text-amber-700">-</div>
+                <h3 class="mt-4 text-base font-semibold text-slate-900">Retirar</h3>
+                <p class="mt-1 text-sm text-slate-500">Retira dinero disponible.</p>
+            </a>
+            <a th:href="@{/transfer}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-teal-200 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-teal-50 text-lg font-bold text-teal-700">⇄</div>
+                <h3 class="mt-4 text-base font-semibold text-slate-900">Transferir</h3>
+                <p class="mt-1 text-sm text-slate-500">Envia saldo a otro usuario.</p>
+            </a>
+            <a th:href="@{/movements}" class="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg">
+                <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-lg font-bold text-blue-700">≡</div>
+                <h3 class="mt-4 text-base font-semibold text-slate-900">Historial</h3>
+                <p class="mt-1 text-sm text-slate-500">Consulta tus movimientos.</p>
+            </a>
+        </div>
+    </section>
+</main>
+</body>
+</html>
